@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer component{
+  .nav-link{
+    @apply items-center hover:bg-slate-200 dark:hover:bg-slate-800 transition-all p-2 rounded-lg flex;
+  }
+  /* .nav-link:not(:last-child){
+    @apply px-2;
+  }
+  .nav-link:last-child{
+    @apply ps-2;
+  } */
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

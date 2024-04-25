@@ -1,10 +1,10 @@
 import React from "react";
 
-export default function Home() {
+export default function Board() {
     return (
       <div className="flex justify-center">
         <div className="container">
-          Cool boards
+            My board
         </div>
       </div>
     );
