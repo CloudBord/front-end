@@ -9,9 +9,7 @@ export default function Board() {
       <div className="flex justify-center">
         <div className="container">
           <main>
-            <div style={{ position: 'fixed', inset: 0 }}>
-              <Tldraw />
-            </div>
+            
           </main>
         </div>
       </div>
