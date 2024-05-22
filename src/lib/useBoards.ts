@@ -1,10 +1,19 @@
 import { Board } from "@/types";
 import { UUID } from "crypto";
+import env from "./environment";
 
-export const getBoardById = async(boardId: UUID) : Promise<Board|null> => {
+export const getBoardById = async(id: UUID) : Promise<Board|null> => {
     try{
-        const res = await fetch(`${process.env.API_URL}`)
+        console.log(env.API_URL)
+        const res = await fetch(`${env.API_URL}/GetBoardById`, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({boardId: id})
+        })
         if(!res.ok){
+            console.log(res);
             throw new Error("Could not get whiteboard contents");
         }
         return await res.json();

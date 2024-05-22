@@ -1,8 +1,9 @@
-'use client'
-
+import { UUID } from "crypto";
+import { v4 as uuidv4 } from "uuid";
+import { getBoardById } from "@/lib/useBoards";
 import React from "react";
-import { Editor, Tldraw, useEditor } from "tldraw";
-import 'tldraw/tldraw.css';
+import { useEditor } from "tldraw";
+import TldrawWrapper from "@/components/TldrawWrapper";
 
 const SaveButton = () => {
   const editor = useEditor();
@@ -28,10 +29,12 @@ const SaveButton = () => {
         cursor: 'pointer',
         zIndex: 1000,
       }}
-      onClick={() =>{
+      onClick={async() =>{
         const snapshot = editor.store.getSnapshot();
         const stringified = JSON.stringify(snapshot);
         console.log(stringified);
+        const response = await getBoardById(uuidv4() as UUID);
+        console.log(response);
       }}
     >
       Save
@@ -45,9 +48,9 @@ export default function Board() {
     return (
       <>
         <div className="flex flex-col h-screen">
-            <Tldraw persistenceKey="banana">
+            <TldrawWrapper>
               <SaveButton />
-            </Tldraw>
+            </TldrawWrapper>
         </div>
       </>
     );
