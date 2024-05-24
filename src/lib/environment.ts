@@ -1,5 +1,5 @@
 const defaults = {
-    API_URL: process.env.API_URL
+    NEXT_PUBLIC_API_URL: 'localhost:7276'
 }
 
 const env = { ...defaults, ...process.env }

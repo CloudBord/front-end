@@ -1,6 +1,6 @@
-import { UUID } from "crypto";
-import { v4 as uuidv4 } from "uuid";
-import { getBoardById } from "@/lib/useBoards";
+'use client'
+
+import { getBoard } from "@/lib/useBoards";
 import React from "react";
 import { useEditor } from "tldraw";
 import TldrawWrapper from "@/components/TldrawWrapper";
@@ -33,7 +33,7 @@ const SaveButton = () => {
         const snapshot = editor.store.getSnapshot();
         const stringified = JSON.stringify(snapshot);
         console.log(stringified);
-        const response = await getBoardById(uuidv4() as UUID);
+        const response = await getBoard(1);
         console.log(response);
       }}
     >

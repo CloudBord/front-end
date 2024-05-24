@@ -1,16 +1,11 @@
 import { Board } from "@/types";
-import { UUID } from "crypto";
 import env from "./environment";
 
-export const getBoardById = async(id: UUID) : Promise<Board|null> => {
+export const getBoard = async(id: number) : Promise<Board|null> => {
     try{
-        console.log(env.API_URL)
-        const res = await fetch(`${env.API_URL}/GetBoardById`, {
+        const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/GetBoard/${id}`, {
             method: 'POST',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({boardId: id})
+            mode: "no-cors"
         })
         if(!res.ok){
             console.log(res);

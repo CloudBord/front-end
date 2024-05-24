@@ -1,8 +1,6 @@
-import { UUID } from "crypto"
-
 export type Board = {
-    boardId: UUID,
-    ownerId: UUID,
+    boardId: number,
+    ownerId: number,
     name: String,
-    members: String[]
+    members: number[]
 }
