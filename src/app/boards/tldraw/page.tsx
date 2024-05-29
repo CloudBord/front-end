@@ -7,15 +7,16 @@ import TldrawWrapper from "@/components/TldrawWrapper";
 
 const SaveButton = () => {
   const editor = useEditor();
-  return (
-    // <button onClick={() => {
-    //   const snapshot = editor.store.getSnapshot();
-    //   const stringified = JSON.stringify(snapshot);
-    //   console.log(stringified);
-    // }}>
-    //   Save
-    // </button>
+  
+  const saveBoard = async () => {
+    const snapshot = editor.store.getSnapshot();
+    const stringified = JSON.stringify(snapshot);
+    console.log(stringified);
+    const response = await getBoard(1);
+    console.log(response);
+  }
 
+  return (
     <button
       style={{
         position: 'absolute',
@@ -29,13 +30,7 @@ const SaveButton = () => {
         cursor: 'pointer',
         zIndex: 1000,
       }}
-      onClick={async() =>{
-        const snapshot = editor.store.getSnapshot();
-        const stringified = JSON.stringify(snapshot);
-        console.log(stringified);
-        const response = await getBoard(1);
-        console.log(response);
-      }}
+      onClick={saveBoard}
     >
       Save
     </button>
@@ -44,7 +39,6 @@ const SaveButton = () => {
 }
 
 export default function Board() {
-  const editor = useEditor();
     return (
       <>
         <div className="flex flex-col h-screen">
