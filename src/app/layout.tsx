@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="w-full">
           <NavBar />
-          <div className="content">{children}</div>
+          <main className="content">{children}</main>
       </body>
     </html>
   );
