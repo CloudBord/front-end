@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
-import { Providers } from './Providers'
-import SessionGuard from '@/components/SessionGuard'
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,12 +18,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="w-full">
-        <Providers>
-          <SessionGuard>
-            <NavBar />
-            <main className="content">{children}</main>
-          </SessionGuard>
-        </Providers>
+          <NavBar />
+          <main className="content">{children}</main>
       </body>
     </html>
   );

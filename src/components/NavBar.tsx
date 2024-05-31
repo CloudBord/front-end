@@ -1,19 +1,12 @@
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
-import Login from "@/components/Login";
-import Logout from "@/components/Logout";
-
 import React from "react";
 import Link from "next/link";
+import { auth, signIn, signOut } from "@/auth";
 
 export async function RenderUserManagement(){
-    const session = await getServerSession(authOptions)
+    const session = await auth();
     if(session){
         return(
             <>
-                <div className="nav-link">
-                    Hello {session.user?.name}!
-                </div>
                 <Link href="/boards" className="nav-link">
                     My Boards
                 </Link>
@@ -21,16 +14,13 @@ export async function RenderUserManagement(){
                     Profile
                 </Link>
                 <div className="nav-link">
-                    <Logout />
+                    <Logout refreshToken={session.refreshToken} idToken={session.idToken}/>
                 </div>
             </>
         )
     }
     return(
         <>
-            {/* <Link href="/register" className="nav-link">
-                Register
-            </Link> */}
             <div className="nav-link">
                 <Login />
             </div>
@@ -55,3 +45,37 @@ export default function NavBar () {
         </nav>
     )
 };
+
+
+function Login() {
+    return (
+        <form action={async () => {
+            "use server";
+            await signIn("keycloak");
+        }}>
+        <button>Log In</button>
+    </form>
+    );
+}
+  
+function Logout({ refreshToken, idToken } : { refreshToken: string, idToken: string}) {
+    return (
+        <form action={async () => {
+            "use server";
+            try{
+                await fetch('http://localhost:3000/api/auth/logout', {
+                    headers: {
+                        refresh_token: refreshToken,
+                        id_token: idToken
+                    }
+                });
+            }
+            catch(error){
+                console.error("Error during sign out: ", error);
+            }
+            await signOut({ redirect: true });
+        }}>
+            <button>Sign Out</button>
+        </form>
+    )
+}

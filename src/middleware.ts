@@ -1,5 +1,10 @@
-export { default } from "next-auth/middleware"
+import { auth } from "./auth";
+
+export default auth((req) => {
+  const isLoggedIn = !!req.auth;
+  
+});
 
 export const config = {
-  matcher: ["/boards"]
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 }

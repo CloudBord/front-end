@@ -1,5 +1,4 @@
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+"use client"
 
 import { getBoard } from "@/lib/useBoards";
 import React from "react";
@@ -38,18 +37,15 @@ const SaveButton = () => {
   )
 }
 
-export default async function Board() {
-  const session = await getServerSession(authOptions)
-  if(session){
-    return (
-      <>
-        <div className="flex flex-col h-screen">
-            <TldrawWrapper>
-              <SaveButton />
-            </TldrawWrapper>
-        </div>
-      </>
-    );
-  }
+export default function Board() {
+  return (
+    <>
+      <div className="flex flex-col h-screen">
+          <TldrawWrapper>
+            <SaveButton />
+          </TldrawWrapper>
+      </div>
+    </>
+  );
 }
   

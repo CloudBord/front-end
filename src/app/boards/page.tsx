@@ -1,14 +1,13 @@
-import { getServerSession } from "next-auth";
+import { auth } from "@/auth";
 import React from "react";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export default async function Boards() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if(session){
     return (
       <div className="flex justify-center">
         <div className="container">
-          Cool boards
+          {session.user?.name}&apos;s boards
         </div>
       </div>
     );
