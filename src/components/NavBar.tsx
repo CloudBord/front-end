@@ -53,8 +53,8 @@ function Login() {
             "use server";
             await signIn("keycloak");
         }}>
-        <button>Log In</button>
-    </form>
+            <button>Log In</button> 
+        </form>
     );
 }
   
@@ -63,7 +63,7 @@ function Logout({ refreshToken, idToken } : { refreshToken: string, idToken: str
         <form action={async () => {
             "use server";
             try{
-                await fetch('http://localhost:3000/api/auth/logout', {
+                await fetch(`${process.env.AUTH_SIGNOUT_URL}`, {
                     headers: {
                         refresh_token: refreshToken,
                         id_token: idToken

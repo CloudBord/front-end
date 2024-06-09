@@ -2,7 +2,7 @@ import { Board } from "@/types";
 
 export const getBoard = async(id: number) : Promise<Board|null> => {
     try{
-        const res = await fetch(`${process.env.API_URL}/api/GetBoard/${id}`, {
+        const res = await fetch(`${process.env.API_URL}/boards/${id}`, {
             method: 'POST',
             next: {
                 revalidate: 0

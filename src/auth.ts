@@ -9,7 +9,7 @@ const params = {
 }
 
 function refreshAccessToken(refresh_token: string){
-    return fetch(`${process.env.KEYCLOAK_ISSUER}/protocol/openid-connect/token`, {
+    return fetch(`${process.env.KEYCLOAK_ISSUER_INTERNAL}/protocol/openid-connect/token`, {
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
         },
@@ -22,6 +22,7 @@ function refreshAccessToken(refresh_token: string){
 }
 
 export const { auth, handlers: { GET, POST } , signIn, signOut } = NextAuth({
+    trustHost: true,
     session: {
         strategy: "jwt",
         maxAge: 60 * 30
