@@ -1,18 +1,34 @@
-'use client'
-
-import { getBoard } from '@/lib/useBoards';
-import { ReactNode } from 'react';
-import { Tldraw } from 'tldraw';
+// import { Tldraw } from 'tldraw';
 import 'tldraw/tldraw.css';
 
-export default function TldrawWrapper({children } : { children: ReactNode }) {
-    const persistenceKey = "whiteboard-contents";
+import { useEditor, Editor } from "tldraw";
+import { getBoard } from "@/hooks/useBoards";
+
+import { useSocketStore } from '@/hooks/useSocketStore';
+import dynamic from 'next/dynamic';
+
+const Tldraw = dynamic(async () => (await import('tldraw')).Tldraw, { ssr: false});
+
+export default function TldrawWrapper({ boardId } : {boardId: string }) {
+	const store = useSocketStore({
+		hostUrl: `${process.env.NEXT_PUBLIC_SOCKET_URL}`,
+		roomId: boardId
+	})
+
+	const editor = useEditor();
 
 	return (
 		<Tldraw
 			autoFocus
-		>
-		{children}
-		</Tldraw>
+			store={store}
+			// onMount={(editor) => {
+			// 	const unlisten = editor.store.listen(
+			// 		(update) => {
+			// 			console.log('update', update)
+			// 		},
+			// 		{ scope: 'document', source: 'user' }
+			// 	)
+			// }}
+		/>
 	)
 }

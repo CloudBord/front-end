@@ -20,10 +20,8 @@ import { WebsocketProvider } from 'y-websocket'
 import * as Y from 'yjs'
 
 export function useYjsStore({
-	roomId = 'room-1',
-	hostUrl = process.env.NODE_ENV === 'development'
-		? 'ws://localhost:5145/ws'
-		: '',
+	roomId = '',
+	hostUrl = `${process.env.NEXT_PUBLIC_SOCKET_URL}`,
 	shapeUtils = [],
 }: Partial<{
 	hostUrl: string
@@ -31,11 +29,13 @@ export function useYjsStore({
 	version: number
 	shapeUtils: TLAnyShapeUtilConstructor[]
 }>) {
+	if(roomId.trim() === ''){
+		throw new Error('Room ID undefined');
+	}
 	const [store] = useState(() => {
 		const store = createTLStore({
 			shapeUtils: [...defaultShapeUtils, ...shapeUtils],
 		})
-
 		return store
 	})
 
@@ -45,7 +45,7 @@ export function useYjsStore({
 
 	const { yDoc, yStore, meta, room } = useMemo(() => {
 		const yDoc = new Y.Doc({ gc: true })
-		const yArr = yDoc.getArray<{ key: string; val: TLRecord }>(`tl_${roomId}`)
+		const yArr = yDoc.getArray<{ key: string; val: TLRecord }>(`${roomId}`)
 		const yStore = new YKeyValue(yArr)
 		const meta = yDoc.getMap<SerializedSchema>('meta')
 
@@ -53,7 +53,7 @@ export function useYjsStore({
 			yDoc,
 			yStore,
 			meta,
-			room: new WebsocketProvider(hostUrl, roomId, yDoc, { connect: true }),
+			room: new WebsocketProvider(hostUrl, `room-${roomId}`, yDoc, { connect: true }),
 		}
 	}, [hostUrl, roomId])
 
