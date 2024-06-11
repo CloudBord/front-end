@@ -1,19 +1,16 @@
 import { HubConnection } from "@microsoft/signalr";
 import { ConnectionInfo } from "@/types";
+import axios from 'axios';
 
 export const getConnectionInfo = async(userId: number): Promise<ConnectionInfo | null> => {
     try{
-        const res = await fetch(
-            `http://localhost:7222/api/negotiate?userId=${userId}`,
-            {
-                method: 'POST'
-            }
-        );
-        if(!res.ok){
+        const res = await axios.post(`http://localhost:7222/api/negotiate?userId=${userId}`);
+        if(res.status >= 300){
             console.log(res);
             throw new Error("Could not connect! Check the logs!");
         }
-        const data = await res.json();
+        const data = await res.data;
+        console.log(res);
         return data;
     }
     catch(error){

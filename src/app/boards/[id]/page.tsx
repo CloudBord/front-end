@@ -52,6 +52,7 @@ const Board = () => {
 
   useEffect(() => {
     getConnectionInfo(1).then(res => {
+      console.log(res);
       if(!res){
         throw new Error();
       }
