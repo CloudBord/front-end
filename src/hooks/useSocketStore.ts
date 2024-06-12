@@ -30,8 +30,6 @@ export function useSocketStore({
 	})
 
 	useEffect(() => {
-		// const socket = new WebSocket(`${hostUrl}/party/room-${roomId}_${version}?_pk=${clientId}`,
-		// );
 		const socket = new PartySocket({
 			host: hostUrl,
 			room: `${roomId}_${version}`,
@@ -143,13 +141,6 @@ export function useSocketStore({
 				scope: 'document',
 			}),
 		)
-
-		// unsubs.push(
-		// 	store.listen(handleChange, {
-		// 		source: 'user',
-		// 		scope: 'presence',
-		// 	})
-		// )
 
 		unsubs.push(() => socket.removeEventListener('open', handleOpen))
 		unsubs.push(() => socket.removeEventListener('close', handleClose))
