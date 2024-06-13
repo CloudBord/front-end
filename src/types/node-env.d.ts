@@ -1,7 +1,6 @@
 declare namespace NodeJS{
     export interface ProcessEnv {
-        API_URL: string
-        NEXT_PUBLIC_SOCKET_URL: string
+        NEXT_PUBLIC_API_URL: string
         AUTH_URL: string
         AUTH_URL_INTERNAL: string
         AUTH_SECRET: string

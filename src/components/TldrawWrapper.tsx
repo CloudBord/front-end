@@ -1,17 +1,16 @@
-// import { Tldraw } from 'tldraw';
-import 'tldraw/tldraw.css';
 
-import { useEditor, Editor } from "tldraw";
+import { useEditor } from "tldraw";
 import { getBoard } from "@/hooks/useBoards";
 
 import { useSocketStore } from '@/hooks/useSocketStore';
 import dynamic from 'next/dynamic';
+import 'tldraw/tldraw.css';
 
 const Tldraw = dynamic(async () => (await import('tldraw')).Tldraw, { ssr: false});
 
 export default function TldrawWrapper({ boardId } : {boardId: string }) {
 	const store = useSocketStore({
-		hostUrl: `${process.env.NEXT_PUBLIC_SOCKET_URL}`,
+		hostUrl: `ws://${process.env.NEXT_PUBLIC_API_URL}`,
 		roomId: boardId
 	})
 
@@ -21,14 +20,6 @@ export default function TldrawWrapper({ boardId } : {boardId: string }) {
 		<Tldraw
 			autoFocus
 			store={store}
-			// onMount={(editor) => {
-			// 	const unlisten = editor.store.listen(
-			// 		(update) => {
-			// 			console.log('update', update)
-			// 		},
-			// 		{ scope: 'document', source: 'user' }
-			// 	)
-			// }}
 		/>
 	)
 }
