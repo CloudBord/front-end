@@ -3,50 +3,62 @@ import { JWT } from "next-auth/jwt";
 import KeycloakProvider from "next-auth/providers/keycloak";
 
 const params = {
-    client_id: process.env.KEYCLOAK_CLIENT_ID,
-    client_secret: process.env.KEYCLOAK_CLIENT_SECRET,
-    grant_type: "refresh_token",
+    clientId: process.env.KEYCLOAK_CLIENT_ID,
+    clientSecret: process.env.KEYCLOAK_CLIENT_SECRET,
+    issuer: process.env.KEYCLOAK_ISSUER,
+    wellKnown: `${process.env.KEYCLOAK_ISSUER}/.well-known/openid-configuration`
 }
 
-function refreshAccessToken(refresh_token: string){
-    return fetch(`${process.env.KEYCLOAK_ISSUER_INTERNAL}/protocol/openid-connect/token`, {
+function refreshAccessToken(refreshToken: string){
+    return fetch(`${process.env.KEYCLOAK_ISSUER}/protocol/openid-connect/token`, {
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
         },
         body: new URLSearchParams({
-            ...params,
-            refresh_token
+            client_id: params.clientId,
+            client_secret: params.clientSecret,
+            "grant_type": "refresh_token",
+            refresh_token: refreshToken
         }),
         method: "POST"
     });
 }
 
 export const { auth, handlers: { GET, POST } , signIn, signOut } = NextAuth({
+    providers: [KeycloakProvider({
+        ...params
+    })],
     trustHost: true,
     session: {
         strategy: "jwt",
         maxAge: 60 * 30
     },
+    pages: {
+
+    },
     callbacks: {
         async session({ session, token }){
-            session.idToken = token.idToken
-            session.refreshToken = token.refreshToken
+            session.token = {
+                accessToken: token.accessToken as unknown as string,
+                refreshToken: token.refreshToken as unknown as string,
+                idToken: token.idToken as unknown as string
+            };
             return session;
         },
-        async jwt({ token, account }) {
+        async jwt({ token, user, account }) {
             if(account){
                 token.idToken = account.id_token;
                 token.accessToken = account.access_token;
                 token.refreshToken = account.refresh_token;
                 token.expiresAt = account.expires_at;
-                token.userId = account.userId;
+                token.user = user;
                 return token;
             }
-            if(Date.now() < (token.expiresAt!)){
+            if(Date.now() < (token.exp!)){
                 return token;
             }
             try{
-                const response = await refreshAccessToken(token.refreshToken);
+                const response = await refreshAccessToken(token.refreshToken!);
                 if(!response.ok) throw new Error();
                 const newToken = await response.json();
                 const updatedToken: JWT = {
@@ -59,12 +71,7 @@ export const { auth, handlers: { GET, POST } , signIn, signOut } = NextAuth({
             }
             catch(error){
                 return { ...token, error: "RefreshAccessTokenError" }
-            }
+            };
         }
-    },
-    providers: [KeycloakProvider({
-        clientId: process.env.KEYCLOAK_CLIENT_ID, 
-        clientSecret: process.env.KEYCLOAK_CLIENT_SECRET, 
-        issuer: process.env.KEYCLOAK_ISSUER,
-    })]
+    }
 })
