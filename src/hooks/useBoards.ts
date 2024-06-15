@@ -1,4 +1,6 @@
+import { auth } from "@/auth";
 import { Board } from "@/types";
+import { JWT } from "next-auth/jwt";
 
 export const getBoard = async(id: number) : Promise<Board|null> => {
     try{
@@ -13,15 +15,37 @@ export const getBoard = async(id: number) : Promise<Board|null> => {
             throw new Error("Could not get whiteboard contents");
         }
 
-        try{
-            return res.json();
-        }
-        catch(error){
-            return null;
-        }
+        return res.json();
     }
     catch(error){
         console.error(error);
         return null;
+    }
+}
+
+
+export const getBoards = async(token: string) : Promise<Board[]> => {
+    try{
+        const res = await fetch(`http://${process.env.NEXT_PUBLIC_API_URL}/boards`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            next: {
+                revalidate: 0
+            }
+        })
+
+        if(!res.ok){
+            throw new Error("Could not get whiteboard contents");
+        }
+
+        const boards: Board[] = await res.json();
+        console.log(boards);
+        return boards;
+    }
+    catch(error){
+        console.error(error);
+        return [];
     }
 }

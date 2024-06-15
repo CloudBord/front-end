@@ -13,13 +13,13 @@ declare module "next-auth/jwt" {
 
 declare module "next-auth" {
   interface Session {
-    token: Token;
+    token: JWT;
     error?: string;
   }
 }
 
-interface Token {
-  accessToken: string;
-  refreshToken: string;
-  idToken: string;
-}
+// interface Token {
+//   accessToken: string;
+//   refreshToken: string;
+//   idToken: string;
+// }
