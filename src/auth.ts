@@ -9,8 +9,8 @@ const params = {
     wellKnown: `${process.env.KEYCLOAK_ISSUER}/.well-known/openid-configuration`
 }
 
-function refreshAccessToken(refreshToken: string){
-    return fetch(`${process.env.KEYCLOAK_ISSUER}/protocol/openid-connect/token`, {
+async function refreshAccessToken(refreshToken: string){
+    return await fetch(`${process.env.KEYCLOAK_ISSUER}/protocol/openid-connect/token`, {
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
         },
@@ -38,11 +38,7 @@ export const { auth, handlers: { GET, POST } , signIn, signOut } = NextAuth({
     },
     callbacks: {
         async session({ session, token }){
-            session.token = {
-                accessToken: token.accessToken as unknown as string,
-                refreshToken: token.refreshToken as unknown as string,
-                idToken: token.idToken as unknown as string
-            };
+            session.token = token;
             return session;
         },
         async jwt({ token, user, account }) {
