@@ -10,7 +10,7 @@ const Tldraw = dynamic(async () => (await import('tldraw')).Tldraw, { ssr: false
 
 export default function TldrawWrapper({ boardId } : {boardId: string }) {
 	const store = useSocketStore({
-		hostUrl: `ws://${process.env.NEXT_PUBLIC_API_URL}`,
+		hostUrl: `${process.env.NEXT_PUBLIC_API_URL}`,
 		roomId: boardId
 	})
 

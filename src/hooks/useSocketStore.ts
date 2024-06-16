@@ -32,7 +32,8 @@ export function useSocketStore({
 	useEffect(() => {
 		const socket = new PartySocket({
 			host: hostUrl,
-			room: `${roomId}_${version}`,
+			room: `${roomId}`,
+			protocol: 'ws'
 		})
         
 		setStoreWithStatus({ status: 'loading' })
@@ -65,13 +66,12 @@ export function useSocketStore({
 		}
 
 		const handleMessage = (message: MessageEvent<any>) => {
-            console.log("Handle message");
 			try {
 				const data = JSON.parse(message.data)
 				if (data.clientId === clientId) {
 					return
 				}
-
+				console.log(data);
 				switch (data.type) {
 					case 'init': {
 						store.loadSnapshot(data.snapshot)
