@@ -1,6 +1,7 @@
 # Sample repurposed from:
 # https://github.com/actions/starter-workflows/blob/main/pages/nextjs.yml
-name: Build Next.js
+
+name: Deployment Pipeline
 
 on:
   # Runs on pushes targeting the default branch
