@@ -1,8 +1,8 @@
 export type Board = {
-    boardId: number,
+    id: number,
     ownerId: number,
     name: String,
-    members: number[]
+    memberIds: number[]
 }
 
 export type ConnectionInfo = {

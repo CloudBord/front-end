@@ -1,6 +1,4 @@
-import { auth } from "@/auth";
 import { Board } from "@/types";
-import { JWT } from "next-auth/jwt";
 
 export const getBoard = async(id: number) : Promise<Board|null> => {
     try{
@@ -41,7 +39,6 @@ export const getBoards = async(token: string) : Promise<Board[]> => {
         }
 
         const boards: Board[] = await res.json();
-        console.log(boards);
         return boards;
     }
     catch(error){
