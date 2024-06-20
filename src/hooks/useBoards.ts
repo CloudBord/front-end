@@ -2,7 +2,7 @@ import { Board } from "@/types";
 
 export const getBoard = async(id: number) : Promise<Board|null> => {
     try{
-        const res = await fetch(`http://${process.env.NEXT_PUBLIC_API_URL}/boards/${id}`, {
+        const res = await fetch(`http://${process.env.NEXT_PUBLIC_API_URL}/api/boards/${id}`, {
             method: 'POST',
             next: {
                 revalidate: 0
@@ -24,7 +24,7 @@ export const getBoard = async(id: number) : Promise<Board|null> => {
 
 export const getBoards = async(token: string) : Promise<Board[]> => {
     try{
-        const res = await fetch(`http://${process.env.NEXT_PUBLIC_API_URL}/boards`, {
+        const res = await fetch(`http://${process.env.NEXT_PUBLIC_API_URL}/api/boards`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`

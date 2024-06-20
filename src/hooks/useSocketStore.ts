@@ -3,6 +3,7 @@ import {
 	StoreListener,
 	TLRecord,
 	TLStoreWithStatus,
+	TLEventMapHandler,
 	createTLStore,
 	defaultShapeUtils,
 	throttle,
@@ -71,7 +72,6 @@ export function useSocketStore({
 				if (data.clientId === clientId) {
 					return
 				}
-				console.log(data);
 				switch (data.type) {
 					case 'init': {
 						store.loadSnapshot(data.snapshot)
@@ -112,9 +112,14 @@ export function useSocketStore({
 			}
 		}
 
+		// const handleActionComplete: TLEventMapHandler<'change'> = (change) =>{
+
+		// }
+
 		const pendingChanges: HistoryEntry<TLRecord>[] = []
 
 		const sendChanges = throttle(() => {
+			console.log(pendingChanges);
 			if (pendingChanges.length === 0) return;
 			socket.send(
 				JSON.stringify({
