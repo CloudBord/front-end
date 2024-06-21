@@ -18,6 +18,14 @@ const config = {
       },
     },
     extend: {
+      zIndex: {
+        // Tldraw for some reason has an enormously large zIndexes 
+        // for its elements. Configure zIndexes here to supplement 
+        // Tailwind's implementation in order to override Tldraw's
+        // zIndexes when attempting to integrate custom elements
+        // in Tldraw.
+        '200': '200'  // Save button
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

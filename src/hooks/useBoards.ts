@@ -21,7 +21,6 @@ export const getBoard = async(id: number) : Promise<Board|null> => {
     }
 }
 
-
 export const getBoards = async(token: string) : Promise<Board[]> => {
     try{
         const res = await fetch(`http://${process.env.NEXT_PUBLIC_API_URL}/api/boards`, {

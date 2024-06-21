@@ -1,8 +1,6 @@
 import { auth } from "@/auth";
 import { BoardCard } from "@/components/BoardCard";
 import { getBoards } from "@/hooks/useBoards";
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
 
 export default async function Boards() {
   const session = await auth();

@@ -3,7 +3,6 @@ import {
 	StoreListener,
 	TLRecord,
 	TLStoreWithStatus,
-	TLEventMapHandler,
 	createTLStore,
 	defaultShapeUtils,
 	throttle,
@@ -14,11 +13,9 @@ import PartySocket from 'partysocket'
 
 const clientId = uniqueId();
 
-export function useSocketStore({ 
-	hostUrl, version = 1,	roomId 
-} : { 
-	hostUrl: string, version?: number, roomId?: string 
-}){
+export function useSocketStore({ boardId, url } 
+	: { boardId?: string, url: string }){
+		
 	const [store] = useState(() => {
 		const store = createTLStore({
 			shapeUtils: [...defaultShapeUtils],
@@ -32,9 +29,12 @@ export function useSocketStore({
 
 	useEffect(() => {
 		const socket = new PartySocket({
-			host: hostUrl,
-			room: `${roomId}`,
-			protocol: 'ws'
+			host: url,
+			room: `room_${boardId}`,
+			protocol: 'ws',
+			query: {
+				boardId: boardId
+			}
 		})
         
 		setStoreWithStatus({ status: 'loading' })
@@ -74,7 +74,7 @@ export function useSocketStore({
 				}
 				switch (data.type) {
 					case 'init': {
-						store.loadSnapshot(data.snapshot)
+						// store.loadSnapshot(data.snapshot)
 						break
 					}
 					case 'recovery': {
@@ -119,7 +119,6 @@ export function useSocketStore({
 		const pendingChanges: HistoryEntry<TLRecord>[] = []
 
 		const sendChanges = throttle(() => {
-			console.log(pendingChanges);
 			if (pendingChanges.length === 0) return;
 			socket.send(
 				JSON.stringify({

@@ -1,9 +1,18 @@
 "use client"
 import TldrawWrapper from "@/components/TldrawWrapper";
-import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { redirect, useParams } from "next/navigation";
+import useSWR from 'swr';
+
+// const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 export default function Board() {
   const params = useParams<{id: string}>();
+  if(isNaN(+params.id)){
+    redirect("/not-found");
+  }
+  
+  const { data: session } = useSession();
 
   return (
     <>
