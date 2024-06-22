@@ -2,7 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { logOut } from "@/lib/login";
 
 export default function NavBar () {
@@ -19,13 +19,20 @@ export default function NavBar () {
                         Home
                     </Link>
                     { session ? 
-                        <Button onClick={() => logOut()}>
-                            Logout
-                        </Button>
+                        <>
+                            <Link href="/boards" className="nav-link">
+                                My Boards
+                            </Link>
+                            <Button onClick={() => logOut()}>
+                                Logout
+                            </Button>
+                        </>
                     : 
-                        <Button onClick={async() => await signIn("keycloak")}>
-                            Login
-                        </Button>
+                        <>
+                            <Button onClick={async() => await signIn("keycloak")}>
+                                Login
+                            </Button>
+                        </>
                     }
                 </ul>
             </div>

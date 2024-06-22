@@ -15,3 +15,8 @@ export type Message = {
     content: string;
     sentTime: Date;
 }
+
+export type Result = {
+    result: boolean;
+    boardId: number
+}
