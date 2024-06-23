@@ -1,25 +1,29 @@
 
-import { useEditor } from "tldraw";
-import { getBoard } from "@/hooks/useBoards";
-
-import { useSocketStore } from '@/hooks/useSocketStore';
+import { useState } from "react";
 import dynamic from 'next/dynamic';
 import 'tldraw/tldraw.css';
 
-const Tldraw = dynamic(async () => (await import('tldraw')).Tldraw, { ssr: false});
+import { useSocketStore } from '@/hooks/useSocketStore';
+import BoardSaveButton from "./BoardSaveButton";
 
-export default function TldrawWrapper({ boardId } : {boardId: string }) {
+const Tldraw = dynamic(async () => (await import('tldraw')).Tldraw, { ssr: false });
+
+export default function TldrawWrapper({ boardId } : { boardId: string }) {
+	const [snapshot, setSnapshot] = useState(null);
+
 	const store = useSocketStore({
-		hostUrl: `${process.env.NEXT_PUBLIC_API_URL}`,
-		roomId: boardId
+		boardId: boardId,
+		url: `${process.env.NEXT_PUBLIC_API_URL}`
 	})
 
-	const editor = useEditor();
-
 	return (
-		<Tldraw
-			autoFocus
-			store={store}
-		/>
+		<>
+			<Tldraw
+				autoFocus
+				store={store}
+			>
+				<BoardSaveButton boardId={boardId}/>
+			</Tldraw>
+		</>
 	)
 }
