@@ -52,6 +52,7 @@ export const createBoard = async(title: string, token: string) : Promise<Respons
             method: 'POST',
             body: JSON.stringify({ title: title }),
             headers: {
+                
                 "Content-Type": "application/json",
                 'Authorization': `Bearer ${token}`
             }
