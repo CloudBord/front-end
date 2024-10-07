@@ -1,3 +1,5 @@
+import { HistoryEntry, TLRecord } from "@tldraw/editor"
+
 export type Board = {
     id: number,
     ownerId: number,
@@ -19,4 +21,8 @@ export type Message = {
 export type Result = {
     result: boolean;
     boardId: number
+}
+
+export type Document = {
+    snapshot : HistoryEntry<TLRecord>[]
 }

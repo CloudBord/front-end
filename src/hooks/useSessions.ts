@@ -24,3 +24,31 @@ export const saveSnapshot = async(document: TLStoreSnapshot, boardId: number) : 
         console.error(error);
     }
 }
+
+
+export const getSnapshot = async(boardId: number) : Promise<object | undefined> => {
+    try{
+        const res = await fetch(`http://${process.env.NEXT_PUBLIC_API_URL}/api/store/${boardId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                boardId: boardId,
+                document: document
+            }),
+            next: {
+                revalidate: 0
+            }
+        })
+        console.log(res);
+
+        if(!res.ok){
+            throw new Error("Could not store document");
+        }
+        return res.json();
+    }
+    catch(error){
+        console.error(error);
+    }
+}

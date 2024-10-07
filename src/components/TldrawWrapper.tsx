@@ -5,6 +5,7 @@ import 'tldraw/tldraw.css';
 
 import { useSocketStore } from '@/hooks/useSocketStore';
 import BoardSaveButton from "./BoardSaveButton";
+import BoardLoadButton from "./BoardLoadButton";
 
 const Tldraw = dynamic(async () => (await import('tldraw')).Tldraw, { ssr: false });
 
@@ -23,6 +24,7 @@ export default function TldrawWrapper({ boardId } : { boardId: string }) {
 				store={store}
 			>
 				<BoardSaveButton boardId={boardId}/>
+				<BoardLoadButton boardId={boardId}/>
 			</Tldraw>
 		</>
 	)

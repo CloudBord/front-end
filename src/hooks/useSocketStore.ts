@@ -112,10 +112,6 @@ export function useSocketStore({ boardId, url }
 			}
 		}
 
-		// const handleActionComplete: TLEventMapHandler<'change'> = (change) =>{
-
-		// }
-
 		const pendingChanges: HistoryEntry<TLRecord>[] = []
 
 		const sendChanges = throttle(() => {
